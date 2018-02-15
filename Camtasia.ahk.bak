@@ -1,0 +1,69 @@
+#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
+#SingleInstance force
+; #Warn  ; Enable warnings to assist with detecting common errors.
+SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
+SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
+winX = 77
+winY = 365
+winX2 = 90
+countF5 = 0
+
+!s:: ;Suspend alt-s
+Suspend
+    if (A_IsSuspended)
+        MsgBox, Hotkeys have been suspended
+    else
+        MsgBox, All hotkeys are now active!
+return
+
+
+
+F5::
+Send {Click 1}
+sleep 50
+MouseGetPos, xpos, ypos 
+sleep 50
+MouseClick, left,,, 1, 0, D  ; Hold down the left mouse button.
+sleep 50
+MouseMove, xpos + winX2, ypos
+sleep 50
+MouseClick, left,,, 1, 0, U  ; Release the mouse button.
+Sleep 50
+Send ^x
+Sleep 50
+clipboard =
+MouseMove, xpos-15, ypos
+Sleep 1500
+MouseClick, left,,, 1, 0, D  ; Hold down the left mouse button.
+sleep 100
+MouseMove, xpos, ypos
+sleep 50
+MouseClick, left,,, 1, 0, U  ; Release the mouse button.
+Sleep 50
+countF5 = countF5 + 1
+if(countF5 == 5){
+    offset = 1
+}else{
+    offset = 0
+}
+MouseMove, xpos+15+offset, ypos
+sleep 50
+
+return
+
+
+
+
+
+
+PGUP::
+MouseGetPos, winX, winY 
+MsgBox, The active window is at %winX%`,%winY%
+return
+
+
+PGDN::
+MouseGetPos, xpos, ypos 
+winX2 := xpos - winX
+MsgBox, The offset is at %winX2%
+return
